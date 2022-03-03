@@ -25,6 +25,9 @@ with open('data/featuresnp.pickle', 'rb') as handle:
 with open('data/names.pickle', 'rb') as handle:
     names = pickle.load(handle)
 
+with open('data/categories.pickle', 'rb') as handle:
+    categories = pickle.load(handle)
+
 # %% PCA
 
 X_PCA = drm.reduce_dimensions(featuresnp, method='PCA')

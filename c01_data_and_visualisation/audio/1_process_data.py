@@ -24,11 +24,13 @@ with open('data/audio_structs.pickle', 'rb') as handle:
 
 features = []
 names = []
+categories = []
 audios = []
 for p in audio_structs:
     print(p)
     features.append( p.features )
     names.append( p.name )
+    categories.append( p.category )
     if hasattr(p, 'audio'):
         audios.append(p.audio)
 
@@ -42,6 +44,9 @@ with open('data/' + os.sep + 'featuresnp.pickle', 'wb') as handle:
 
 with open('data/' + os.sep + 'names.pickle', 'wb') as handle:
     pickle.dump(names, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+with open('data/' + os.sep + 'categories.pickle', 'wb') as handle:
+    pickle.dump(categories, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 if len(audios) > 0:
     with open('data/' + os.sep + 'audios.pickle', 'wb') as handle:

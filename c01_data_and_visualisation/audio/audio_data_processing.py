@@ -19,6 +19,7 @@ class AudioInfo:
                 AudioInfo.maximum_columns = self.power_spectrum.shape[1]
             self.define_category()
             self.make_features()
+            self.assign_category()
             if not keep_audio:
                 del self.audio
         else:
@@ -55,5 +56,43 @@ class AudioInfo:
     def plot_blurred_spectrum(self):
         plt.imshow(self.blurred_spectrum, cmap='gray_r', origin='lower')
     # end plot_blurred_spectrum
+    
+    def assign_category(self):
+        if 'kick' in self.name.lower() or 'bass' in self.name.lower():
+            self.category = 'kick'
+        elif 'snare' in self.name.lower():
+            self.category = 'snare'
+        elif 'tom' in self.name.lower():
+            self.category = 'tom'
+        elif 'hat' in self.name.lower() or 'hh' in self.name.lower():
+            self.category = 'hihat'
+        elif 'bell' in self.name.lower():
+            self.category = 'bell'
+        elif 'conga' in self.name.lower():
+            self.category = 'conga'
+        elif 'bongo' in self.name.lower():
+            self.category = 'bongo'
+        elif 'ride' in self.name.lower():
+            self.category = 'ride'
+        elif 'ride' in self.name.lower():
+            self.category = 'ride'
+        elif 'crash' in self.name.lower():
+            self.category = 'crash'
+        elif 'agogo' in self.name.lower():
+            self.category = 'agogo'
+        elif 'clave' in self.name.lower():
+            self.category = 'clave'
+        elif 'clap' in self.name.lower():
+            self.category = 'clap'
+        elif 'rim' in self.name.lower():
+            self.category = 'rim'
+        elif 'stick' in self.name.lower():
+            self.category = 'stick'
+        elif 'tamb' in self.name.lower():
+            self.category = 'tambourine'
+        elif 'shak' in self.name.lower():
+            self.category = 'shaker'
+        else:
+            self.category = 'unknown'
     
 # end class AudioInfo

@@ -34,6 +34,9 @@ with open('data/featuresnp.pickle', 'rb') as handle:
 with open('data/names.pickle', 'rb') as handle:
     names = pickle.load(handle)
 
+with open('data/categories.pickle', 'rb') as handle:
+    categories = pickle.load(handle)
+
 with open('data/audios.pickle', 'rb') as handle:
     audios = pickle.load(handle)
 
@@ -50,8 +53,18 @@ X_embedded = X_TSNE
 
 # %% 
 
+ucat = np.unique(categories)
+catmap = {}
+for i in range(len(ucat)):
+    catmap[ucat[i]] = i
+catnum = []
+for c in categories:
+    catnum.append( catmap[c] )
+
+# %% 
+
 fig,ax = plt.subplots()
-sc = plt.scatter( X_embedded[:,0], X_embedded[:,1], alpha=0.5, s=7 )
+sc = plt.scatter( X_embedded[:,0], X_embedded[:,1], cmap='hsv', c=catnum, alpha=0.5, s=7 )
 
 annot = ax.annotate("", xy=(0,0), xytext=(20,20),textcoords="offset points",
                     bbox=dict(boxstyle="round", fc="w"),
@@ -64,7 +77,7 @@ def update_annot(ind):
     annot.xy = pos
     # text = 'lala' + str(ind)
     idxs = ind["ind"]
-    text = names[idxs[0]]
+    text = categories[idxs[0]]
     global idx_prev
     if idx_prev != idxs[0]:
         sd.stop()
