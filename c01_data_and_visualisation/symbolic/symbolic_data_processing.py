@@ -13,7 +13,7 @@ class SymbolicInfo:
         if metadatafile is not None and SymbolicInfo.metadata is None:
             SymbolicInfo.metadata = pd.read_csv( metadatafile )
         if filepath.split('.')[-1] in ['xml', 'mid', 'midi', 'mxl', 'musicxml']:
-            self.name = filepath.split('.')[0].split(os.sep)[-1]
+            self.name = filepath.split('.')[-2].split(os.sep)[-1]
             if SymbolicInfo.metadata is not None:
                 self.title = self.metadata[ self.metadata['ID'] == self.name ]['Title']
             self.stream = m21.converter.parse( filepath )
@@ -21,6 +21,7 @@ class SymbolicInfo:
             self.pcs = []
             self.pcp = np.zeros(12)
             self.make_pcp()
+            self.estimate_tonality()
         else:
             print('bad format')
     # end __init__
@@ -37,23 +38,8 @@ class SymbolicInfo:
         if np.sum(self.pcp) != 0:
             self.pcp = self.pcp/np.sum(self.pcp)
     # end make_pcp
-# 
-
-folder = 'data/WTC_I/'
-files = os.listdir( folder )
-
-pieces = []
-
-for f in files:
-    print('trying ', f)
-    if f.endswith('.mxl'):
-        print('processing...')
-        pieces.append( SymbolicInfo(folder + f, metadatafile=folder+'metadata.csv' ) )
-
-# %% 
-pcps = []
-for p in pieces:
-    print(p)
-    pcps.append( p.pcp )
-
-pcpsnp = np.array(pcps)
+    
+    def estimate_tonality(self):
+        p = m21.analysis.discrete.KrumhanslSchmuckler()
+        self.estimated_tonality = p.getSolution(self.stream)
+# end class SymbolicInfo
