@@ -18,6 +18,9 @@ else:
 
 from audio_data_processing import AudioInfo
 
+if not os.path.exists('data'):
+    os.makedirs('data')
+
 # %%
 
 folder = '../../data/drumMachines200/'

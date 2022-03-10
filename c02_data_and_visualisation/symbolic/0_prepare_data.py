@@ -18,6 +18,9 @@ else:
 
 from symbolic_data_processing import SymbolicInfo
 
+if not os.path.exists('data'):
+    os.makedirs('data')
+
 # %%
 
 folder = '../../data/WTC_I/'
