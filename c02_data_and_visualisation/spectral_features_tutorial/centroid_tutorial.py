@@ -51,7 +51,7 @@ plt_alias.fill_between(np.linspace( 0, s.size/sr, c.size ), c - b, c + b, alpha=
 rms = librosa.feature.rms(S=spectral_magnitude)
 rms = rms[0]
 
-plt_alias.plot( np.linspace( 0, s.size/sr, rms.size ), range_high*100*rms , 'r' )
+plt_alias.plot( np.linspace( 0, s.size/sr, rms.size ), range_high*rms , 'r' )
 
 # %% mask useful part
 
