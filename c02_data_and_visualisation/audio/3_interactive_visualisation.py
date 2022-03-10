@@ -49,7 +49,7 @@ with open('data/X_MDS.pickle', 'rb') as handle:
 with open('data/X_TSNE.pickle', 'rb') as handle:
     X_TSNE = pickle.load(handle)
 
-X_embedded = X_TSNE
+X_embedded = X_PCA
 
 # %% 
 

@@ -49,6 +49,6 @@ with open('data/' + os.sep + 'X_TSNE.pickle', 'wb') as handle:
 # %% 
 
 plt.clf()
-plt.scatter( X_TSNE[:,0], X_TSNE[:,1], alpha=0.5, s=9 )
+plt.scatter( X_PCA[:,0], X_TSNE[:,1], alpha=0.5, s=9 )
 # for i,lab in enumerate(names):
 #     plt.text( X_embedded[i,0], X_embedded[i,1], lab )

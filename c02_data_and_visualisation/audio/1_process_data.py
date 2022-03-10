@@ -36,6 +36,14 @@ for p in audio_structs:
 
 featuresnp = np.array(features)
 featuresnp = np.reshape( featuresnp, (featuresnp.shape[0], featuresnp.shape[1]) )
+# remove nan values
+idx = np.argwhere(np.isnan(featuresnp))
+while idx.size > 0:
+    featuresnp = np.delete( featuresnp , (idx[0,0]), axis=0 )
+    del names[idx[0,0]]
+    del categories[idx[0,0]]
+    del audios[idx[0,0]]
+    idx = np.argwhere(np.isnan(featuresnp))
 
 # save pickle
 
