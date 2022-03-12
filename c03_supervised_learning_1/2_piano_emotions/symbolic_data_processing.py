@@ -58,7 +58,7 @@ class SymbolicEmotionInfo():
             SymbolicEmotionInfo.metadata = pd.read_csv( metadatafile )
         if filepath.split('.')[-1] in ['xml', 'mid', 'midi', 'mxl', 'musicxml']:
             self.filename = filepath.split('.')[-2].split(os.sep)[-1]
-            self.name = self.filename[3:-2]
+            self.name = '_'.join(self.filename[3:].split('_')[:-1])
             if SymbolicEmotionInfo.metadata is not None:
                 self.dominantQ = self.metadata[ self.metadata['songID'] == self.name ]['DominantQ'].iloc[0]
                 self.isHappy = True if self.dominantQ == 1 or self.dominantQ == 4 else False
@@ -73,6 +73,10 @@ class SymbolicEmotionInfo():
             # self.features_dictionary = fcf.compute_features_of_m21score( self.stream )
             self.flat = self.stream.flat.notes
             self.pcs = []
+            self.onsets = []
+            self.ioi = []
+            self.durations = []
+            self.make_pcs_and_rhythms()
             self.pcp = np.zeros(12)
             self.make_pcp()
             self.make_rhythm_features()
@@ -81,18 +85,27 @@ class SymbolicEmotionInfo():
                 del self.stream
                 del self.flat
                 del self.pcp
+                del self.onsets
+                del self.ioi
+                del self.durations
                 del self.rhythm_features
         else:
             print('bad format')
     # end __init__
     
-    def make_pcs(self):
+    def make_pcs_and_rhythms(self):
         for p in self.flat.pitches:
             self.pcs.append( p.midi%12 )
-    # end make_pcp
+        for n in self.flat:
+            if n.offset not in self.onsets:
+                self.onsets.append(float(n.offset))
+            self.durations.append(float(n.duration.quarterLength))
+        self.onsets = np.array( self.onsets )
+        self.ioi = np.diff( self.onsets )
+        self.durations = np.array( self.durations )
+    # end make_pcs_and_rhythms
     
     def make_pcp(self):
-        self.make_pcs()
         for p in self.pcs:
             self.pcp[p] += 1
         if np.sum(self.pcp) != 0:
@@ -102,22 +115,10 @@ class SymbolicEmotionInfo():
     def make_rhythm_features(self):
         self.rhythm_features = np.zeros(5)
         
-        m0 = m21.features.jSymbolic.AverageNoteDurationFeature(self.stream)
-        self.rhythm_features[0]  = m0.extract().vector[0]
-        
-        m1 = m21.features.jSymbolic.VariabilityOfNoteDurationFeature(self.stream)
-        self.rhythm_features[1] = m1.extract().vector[0]
-        
-        m2 = m21.features.jSymbolic.AverageTimeBetweenAttacksFeature(self.stream)
-        self.rhythm_features[2] = m2.extract().vector[0]
-        
-        m3 = m21.features.jSymbolic.VariabilityOfTimeBetweenAttacksFeature(self.stream)
-        self.rhythm_features[3] = m3.extract().vector[0]
-        
-        m4 = m21.features.jSymbolic.NoteDensityFeature(self.stream)
-        self.rhythm_features[4] = m4.extract().vector[0]/16
-        
-        if SymbolicEmotionInfo.rhythm_feature_description is None:
-            SymbolicEmotionInfo.rhythm_feature_description = ['AverageNoteDuration', 'VariabilityOfNoteDuration', 'AverageTimeBetweenAttacks', 'NoteDensity']
+        self.rhythm_features[0] = np.mean( self.ioi )
+        self.rhythm_features[1] = np.std( self.ioi )
+        self.rhythm_features[2] = np.mean( self.durations )
+        self.rhythm_features[3] = np.std( self.durations )
+        self.rhythm_features[4] = np.std( self.onsets[-1] )/self.onsets.size
     # end make_rhythm_features
 # end class SymbolicEmotionInfo
