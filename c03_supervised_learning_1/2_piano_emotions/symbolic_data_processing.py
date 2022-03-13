@@ -2,7 +2,6 @@ import music21 as m21
 import numpy as np
 import os
 import pandas as pd
-import FC_feature_computation_functions as fcf
 
 class SymbolicInfo:
     
@@ -49,7 +48,8 @@ class SymbolicInfo:
 class SymbolicEmotionInfo():
     
     metadata = None
-    rhythm_feature_description = None
+    major_profile = m21.analysis.discrete.KrumhanslSchmuckler().getWeights('major')
+    minor_profile = m21.analysis.discrete.KrumhanslSchmuckler().getWeights('minor')
     
     def __init__(self, filepath, metadatafile=None, keep_aux=False, logging=False):
         if logging:
@@ -77,10 +77,9 @@ class SymbolicEmotionInfo():
             self.ioi = []
             self.durations = []
             self.make_pcs_and_rhythms()
-            self.pcp = np.zeros(12)
-            self.make_pcp()
+            self.make_rpcp()
             self.make_rhythm_features()
-            self.features = np.hstack( (self.pcp, self.rhythm_features) )
+            self.features = np.hstack( (self.rpcp, self.rhythm_features) )
             if not keep_aux:
                 del self.stream
                 del self.flat
@@ -89,6 +88,7 @@ class SymbolicEmotionInfo():
                 del self.ioi
                 del self.durations
                 del self.rhythm_features
+                del self.estimated_tonality
         else:
             print('bad format')
     # end __init__
@@ -112,6 +112,13 @@ class SymbolicEmotionInfo():
             self.pcp = self.pcp/np.sum(self.pcp)
     # end make_pcp
     
+    def make_rpcp(self):
+        self.pcp = np.zeros(12)
+        self.make_pcp()
+        self.estimated_tonality = self.tonality_from_pcp()
+        self.rpcp = np.roll( self.pcp, -self.estimated_tonality['root'] )
+    # end make_rpcp
+    
     def make_rhythm_features(self):
         self.rhythm_features = np.zeros(5)
         
@@ -119,6 +126,28 @@ class SymbolicEmotionInfo():
         self.rhythm_features[1] = np.std( self.ioi )
         self.rhythm_features[2] = np.mean( self.durations )
         self.rhythm_features[3] = np.std( self.durations )
-        self.rhythm_features[4] = np.std( self.onsets[-1] )/self.onsets.size
+        self.rhythm_features[4] = np.max( self.onsets )/self.onsets.size
     # end make_rhythm_features
+    
+    def tonality_from_pcp( self ):
+        major_corrs = np.zeros(12).astype(np.float32)
+        minor_corrs = np.zeros(12).astype(np.float32)
+        for i in range(12):
+            major_corrs[i] = np.corrcoef( self.pcp, np.roll( 
+                self.major_profile, i ) )[0][1]
+            minor_corrs[i] = np.corrcoef( self.pcp, np.roll( 
+                self.minor_profile, i ) )[0][1]
+        major_max_idx = np.argmax( major_corrs )
+        minor_max_idx = np.argmax( minor_corrs )
+        major_max = np.max( major_corrs )
+        minor_max = np.max( minor_corrs )
+        if major_max > minor_max:
+            return {'root': major_max_idx,
+                    'mode': 'major',
+                    'correlation': major_max}
+        else:
+            return {'root': minor_max_idx,
+                    'mode': 'minor',
+                    'correlation': minor_max}
+    # end tonality_from_pcp
 # end class SymbolicEmotionInfo
