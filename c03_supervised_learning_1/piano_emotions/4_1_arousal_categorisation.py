@@ -123,7 +123,7 @@ scores_svm = cross_val_score( svm_class, featuresnp, energeticflagsnp.ravel(),
 
 def present_scores( s , algorithm='method' ):
     print(30*'-')
-    print( algorithm + ' accuracy in 10-fold cross validation:' )
+    print( algorithm + ' accuracy in 10-fold stratified split validation:' )
     print('mean: ' + str( np.mean(s) ))
     print('std: ' + str( np.std(s) ))
     print('median: ' + str( np.median(s) ))

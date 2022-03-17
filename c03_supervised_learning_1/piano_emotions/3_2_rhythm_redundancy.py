@@ -117,6 +117,7 @@ plt.title('RMSE: ' + str(rmse))
 
 plt.clf()
 plt.bar(np.arange(lin_reg.coef_.size), lin_reg.coef_)
+plt.savefig( 'figs/arousal_lin_regression_coef.png' , dpi=300 )
 
 # %% redundancy through correlation
 

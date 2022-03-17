@@ -37,6 +37,7 @@ with open('data/arousalsnp.pickle', 'rb') as handle:
 # specifically, plot a sorted version to see overall trends
 plt.clf()
 plt.plot( np.sort( arousalsnp ) )
+plt.savefig( 'figs/arousal_lin_targets.png' , dpi=300 )
 
 # %% spit data to training and test set
 
@@ -50,6 +51,7 @@ plt.clf()
 sorted_idxs = np.argsort( arousalsnp )
 plt.plot( np.sort( arousalsnp ) )
 plt.plot( fake_classes[sorted_idxs] )
+plt.savefig( 'figs/arousal_classes_lin_targets.png' , dpi=300 )
 
 # %% stratified split
 from sklearn.model_selection import StratifiedShuffleSplit
@@ -64,13 +66,17 @@ test_idxs = idxs_list[0][1]
 plt.clf()
 plt.subplot(2,1,1)
 plt.plot( np.sort( arousalsnp[train_idxs] ) )
+plt.title('Training')
 plt.subplot(2,1,2)
 plt.plot( np.sort( arousalsnp[test_idxs] ) )
+plt.title('Testing')
+plt.savefig( 'figs/arousal_train_test_lin_targets.png' , dpi=300 )
 
 # %% check inputs
 
 plt.clf()
 plt.boxplot( featuresnp )
+plt.savefig( 'figs/features_unscaled.png' , dpi=300 )
 
 # %% scale inputs
 
@@ -88,6 +94,7 @@ plt.subplot(2,2,3)
 plt.boxplot( featuresnp[:,:12] )
 plt.subplot(2,2,4)
 plt.boxplot( scaled_features[:,:12] )
+plt.savefig( 'figs/features_scaled.png' , dpi=300 )
 
 train_input = scaled_features[ train_idxs , : ]
 train_output = arousalsnp[ train_idxs ]

@@ -17,6 +17,9 @@ if sys.version_info >= (3,8):
 else:
     import pickle5 as pickle
 
+if not os.path.exists('figs'):
+    os.makedirs('figs')
+
 # %% 
 
 with open('data/featuresnp.pickle', 'rb') as handle:
@@ -37,18 +40,18 @@ X_embedded = drm.reduce_dimensions(featuresnp[:,:-1], method='TSNE')
 
 plt.clf()
 plt.scatter( X_embedded[:,0], X_embedded[:,1], c=domiantQsnp, cmap='jet', alpha=0.5 )
-# plt.plot( X_embedded[:,0], X_embedded[:,1], '.' )
-# for i,lab in enumerate(domiantQsnp):
-#     plt.text( X_embedded[i,0], X_embedded[i,1], str(lab) )
+plt.savefig( 'figs/quartile_visualisation.png' , dpi=300 )
 
 # %% 
 
 plt.clf()
 plt.scatter( X_embedded[:,0], X_embedded[:,1], c=happyflagsnp, cmap='PiYG', alpha=0.5 )
-plt.title('Happy')
+plt.title('Valence')
+plt.savefig( 'figs/valence_visualisation.png' , dpi=300 )
 
 # %% 
 
 plt.clf()
 plt.scatter( X_embedded[:,0], X_embedded[:,1], c=energeticflagsnp, cmap='PiYG', alpha=0.5)
-plt.title('Energetic')
+plt.title('Arousal')
+plt.savefig( 'figs/arousal_visualisation.png' , dpi=300 )
