@@ -13,7 +13,7 @@ class SymbolicInfo:
         if metadatafile is not None and SymbolicInfo.metadata is None:
             SymbolicInfo.metadata = pd.read_csv( metadatafile )
         if filepath.split('.')[-1] in ['xml', 'mid', 'midi', 'mxl', 'musicxml']:
-            self.name = filepath.split('.')[-2].split(os.sep)[-1]
+            self.name = filepath.split('.')[-2].split('/')[-1]
             if SymbolicInfo.metadata is not None:
                 self.title = self.metadata[ self.metadata['ID'] == self.name ]['Title']
             self.stream = m21.converter.parse( filepath )
@@ -57,7 +57,7 @@ class SymbolicEmotionInfo():
         if metadatafile is not None and SymbolicInfo.metadata is None:
             SymbolicEmotionInfo.metadata = pd.read_csv( metadatafile )
         if filepath.split('.')[-1] in ['xml', 'mid', 'midi', 'mxl', 'musicxml']:
-            self.filename = filepath.split('.')[-2].split(os.sep)[-1]
+            self.filename = filepath.split('.')[-2].split('/')[-1]
             self.name = '_'.join(self.filename[3:].split('_')[:-1])
             if SymbolicEmotionInfo.metadata is not None:
                 self.dominantQ = self.metadata[ self.metadata['songID'] == self.name ]['DominantQ'].iloc[0]

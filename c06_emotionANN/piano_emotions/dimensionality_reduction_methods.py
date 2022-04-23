@@ -15,7 +15,7 @@ def reduce_dimensions(x, n_components=2, method='PCA', logging=True):
     elif method == 'MDS':
         method_runner = MDS(n_components=n_components)
     else:
-        method_runner = TSNE(n_components=n_components, learning_rate='auto', init='pca', verbose=2, n_iter=3000)
+        method_runner = TSNE(n_components=n_components, init='pca', verbose=2, n_iter=3000)
     X_embedded = method_runner.fit_transform(x)
     if logging:
         # how much of the variance is explained in each dimension
