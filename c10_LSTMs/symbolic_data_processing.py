@@ -72,12 +72,14 @@ class SymbolicInfo:
             f = st.flat
             for n in f.notes:
                 if isinstance(n, m21.note.Note):
-                    s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
-                    prev_offset = n.offset
+                    if n.offset - prev_offset > 0:
+                        s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
+                        prev_offset = n.offset
                 elif isinstance(n, m21.chord.Chord):
-                    for note in n:
-                        s += '_(' + str(note.pitch.midi) + ',' + str(note.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
-                    prev_offset = n.offset
+                    if n.offset - prev_offset > 0:
+                        for note in n:
+                            s += '_(' + str(note.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
+                        prev_offset = n.offset  
         self.nod_12t_string = s
     # end make_NOD_string
 # end class SymbolicInfo
