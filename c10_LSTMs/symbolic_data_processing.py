@@ -65,11 +65,11 @@ class SymbolicInfo:
 
     def make_12t_NOD_string(self):
         s = ''
-        prev_offset = 0
         for i in range(-6, 6, 1):
             ival = m21.interval.Interval( i )
             st = self.stream.transpose(ival)
             f = st.flat
+            prev_offset = 0
             for n in f.notes:
                 if isinstance(n, m21.note.Note):
                     if n.offset - prev_offset > 0:
