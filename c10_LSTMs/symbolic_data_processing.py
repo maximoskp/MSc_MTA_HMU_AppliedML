@@ -56,12 +56,9 @@ class SymbolicInfo:
                     s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
                     prev_offset = n.offset
             elif isinstance(n, m21.chord.Chord):
-                update_offset = False
-                for note in n:
-                    if n.offset - prev_offset > 0:
-                        update_offset = True
-                        s += '_(' + str(note.pitch.midi) + ',' + str(note.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
-                if update_offset:
+                if n.offset - prev_offset > 0:
+                    for note in n:
+                        s += '_(' + str(note.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
                     prev_offset = n.offset
         self.nod_string = s
     # end make_NOD_string
