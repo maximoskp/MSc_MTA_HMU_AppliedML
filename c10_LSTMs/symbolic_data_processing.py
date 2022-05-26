@@ -23,6 +23,8 @@ class SymbolicInfo:
             self.make_pcp()
             self.estimate_tonality()
             self.make_NOD_string()
+            print('making 12t')
+            self.make_12t_NOD_string()
         else:
             print('bad format')
     # end __init__
@@ -57,6 +59,25 @@ class SymbolicInfo:
                     s += '_(' + str(note.pitch.midi) + ',' + str(note.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
                 prev_offset = n.offset
         self.nod_string = s
+    # end make_NOD_string
+
+    def make_12t_NOD_string(self):
+        s = ''
+        prev_offset = 0
+        for i in range(-6, 6, 1):
+            ival = m21.interval.Interval( i )
+            st = self.stream.transpose(ival)
+            f = st.flat
+            for n in f.notes:
+                if isinstance(n, m21.note.Note):
+                    s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
+                    prev_offset = n.offset
+                elif isinstance(n, m21.chord.Chord):
+                    for note in n:
+                        s += '_(' + str(note.pitch.midi) + ',' + str(note.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
+                    prev_offset = n.offset
+        self.nod_12t_string = s
+    # end make_NOD_string
 # end class SymbolicInfo
 
 

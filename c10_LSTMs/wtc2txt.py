@@ -22,7 +22,7 @@ for f in files:
 # make a single string
 wtc1_string = ''
 for s in wtc1_structs:
-    wtc1_string += s.nod_string
+    wtc1_string += s.nod_12t_string
 
 text_file = open("wtc1.txt", "w")
 text_file.write(wtc1_string)
