@@ -52,11 +52,11 @@ class SymbolicInfo:
         prev_offset = 0
         for n in self.flat.notes:
             if isinstance(n, m21.note.Note):
-                if n.offset - prev_offset > 0:
+                if n.offset - prev_offset >= 0:
                     s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
                     prev_offset = n.offset
             elif isinstance(n, m21.chord.Chord):
-                if n.offset - prev_offset > 0:
+                if n.offset - prev_offset >= 0:
                     for note in n:
                         s += '_(' + str(note.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
                     prev_offset = n.offset
@@ -65,18 +65,18 @@ class SymbolicInfo:
 
     def make_12t_NOD_string(self):
         s = ''
-        prev_offset = 0
         for i in range(-6, 6, 1):
             ival = m21.interval.Interval( i )
             st = self.stream.transpose(ival)
             f = st.flat
+            prev_offset = 0
             for n in f.notes:
                 if isinstance(n, m21.note.Note):
-                    if n.offset - prev_offset > 0:
+                    if n.offset - prev_offset >= 0:
                         s += '_(' + str(n.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(n.duration.quarterLength) + ')'
                         prev_offset = n.offset
                 elif isinstance(n, m21.chord.Chord):
-                    if n.offset - prev_offset > 0:
+                    if n.offset - prev_offset >= 0:
                         for note in n:
                             s += '_(' + str(note.pitch.midi) + ',' + str(n.offset - prev_offset) + ',' + str(note.duration.quarterLength) + ')'
                         prev_offset = n.offset  
