@@ -2,7 +2,7 @@
 
 Create a folder named "data" in the repository.
 
-Put in the "data", the following subfolders:
+Put in the "data" folder you created, the following subfolders:
 
 1: Bach WTC I:
 https://imisathena-my.sharepoint.com/:f:/g/personal/maximos_athenarc_gr/ElVLEFfMBHRNgRQvglAqibMBL3TSteW603jxiulz1g8X-A?e=9DWhlU
