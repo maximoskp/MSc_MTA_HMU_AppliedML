@@ -18,6 +18,6 @@ if not os.path.exists('data'):
 # %%
 
 file_path = '../../data/drumMachines200/AKAI XE-8/MaxV - XE8 Block 1 ext_14.wav'
-test_obj = AudioInfo( file_path , keep_audio=True )
+test_obj = AudioInfo( file_path , keep_audio=False, keep_aux=False )
 
 print( 'size of data: ' + str(len(pickle.dumps(test_obj, -1))) )

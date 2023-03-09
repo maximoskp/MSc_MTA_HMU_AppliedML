@@ -20,6 +20,8 @@ else:
 with open('data/audio_structs.pickle', 'rb') as handle:
     audio_structs = pickle.load(handle)
 
+# %%
+
 # prepare array of pcps
 
 features = []

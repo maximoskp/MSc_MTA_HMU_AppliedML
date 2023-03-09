@@ -49,7 +49,7 @@ with open('data/X_TSNE.pickle', 'rb') as handle:
 # X_embedded = X_MDS
 X_embedded = X_TSNE
 
-n_clusters = 10
+n_clusters = 20
 kmeans = KMeans(n_clusters=n_clusters, n_init=30, max_iter=1000, verbose=1)
 km_labels = kmeans.fit_predict(X_embedded)
 km_centers = kmeans.cluster_centers_
