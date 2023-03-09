@@ -45,6 +45,8 @@ with open('data/X_TSNE.pickle', 'rb') as handle:
 
 # %% 
 
+# X_embedded = X_PCA
+# X_embedded = X_MDS
 X_embedded = X_TSNE
 
 n_clusters = 10

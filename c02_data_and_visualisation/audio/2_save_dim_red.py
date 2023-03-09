@@ -30,19 +30,19 @@ with open('data/categories.pickle', 'rb') as handle:
 
 # %% PCA
 
-X_PCA = drm.reduce_dimensions(featuresnp, method='PCA')
+X_PCA, pca_obj = drm.reduce_dimensions(featuresnp, method='PCA')
 with open('data/' + os.sep + 'X_PCA.pickle', 'wb') as handle:
     pickle.dump(X_PCA, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 # %% MDS
 
-X_MDS = drm.reduce_dimensions(featuresnp, method='MDS')
+X_MDS, mds_obj = drm.reduce_dimensions(featuresnp, method='MDS')
 with open('data/' + os.sep + 'X_MDS.pickle', 'wb') as handle:
     pickle.dump(X_MDS, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 # %% TSNE
 
-X_TSNE = drm.reduce_dimensions(featuresnp, method='TSNE')
+X_TSNE, tsne_obj = drm.reduce_dimensions(featuresnp, method='TSNE')
 with open('data/' + os.sep + 'X_TSNE.pickle', 'wb') as handle:
     pickle.dump(X_TSNE, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
