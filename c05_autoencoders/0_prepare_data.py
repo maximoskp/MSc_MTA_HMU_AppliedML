@@ -24,7 +24,7 @@ if not os.path.exists('data'):
 # %%
 
 # CAUTION: need to remove MaxV - Guiro.wav from Roland JV 1080
-folder = '../../data/drumMachines200/'
+folder = '../data/drumMachines200/'
 subfolders = os.listdir( folder )
 
 audio_structs = []
@@ -36,7 +36,7 @@ for s in subfolders:
             print('trying ', f)
             if f.endswith('.wav'):
                 print('processing...')
-                audio_structs.append( AudioInfo(folder + s + os.sep + f, keep_audio=True ) )
+                audio_structs.append( AudioInfo(folder + s + os.sep + f, keep_audio=True, sr=8000 ) )
 
 with open('data/' + os.sep + 'audio_structs.pickle', 'wb') as handle:
     pickle.dump(audio_structs, handle, protocol=pickle.HIGHEST_PROTOCOL)
