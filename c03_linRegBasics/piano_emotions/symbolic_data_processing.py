@@ -74,7 +74,7 @@ class SymbolicEmotionInfo():
             self.flat = self.stream.flat.notes
             self.pcs = []
             self.onsets = []
-            self.ioi = []
+            self.ioi = [] # inter-onset interval
             self.durations = []
             self.make_pcs_and_rhythms()
             self.make_rpcp()

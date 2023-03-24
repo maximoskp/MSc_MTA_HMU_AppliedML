@@ -69,7 +69,7 @@ plt.boxplot( featuresnp )
 
 from sklearn.preprocessing import StandardScaler
 
-scaler = StandardScaler(with_mean=True, with_std=True)
+scaler = StandardScaler(with_mean=False, with_std=True)
 scaled_features = scaler.fit_transform( featuresnp )
 
 plt.clf()

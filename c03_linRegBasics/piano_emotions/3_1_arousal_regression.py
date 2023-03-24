@@ -32,6 +32,9 @@ with open('data/featuresnp.pickle', 'rb') as handle:
 with open('data/arousalsnp.pickle', 'rb') as handle:
     arousalsnp = pickle.load(handle)
 
+# try removing the last feature - rhythm - redundant
+# featuresnp = featuresnp[:,:-1]
+
 # %% visualise arousal values
 
 # specifically, plot a sorted version to see overall trends
@@ -82,7 +85,7 @@ plt.savefig( 'figs/features_unscaled.png' , dpi=300 )
 
 from sklearn.preprocessing import StandardScaler
 
-scaler = StandardScaler(with_mean=True, with_std=True)
+scaler = StandardScaler(with_mean=False, with_std=True)
 scaled_features = scaler.fit_transform( featuresnp )
 
 plt.clf()
@@ -134,5 +137,5 @@ plt.colorbar()
 
 # %% correlation of 13 and 17
 
-plt.clf()
-plt.plot( featuresnp[:,12] , featuresnp[:,16], '.' )
+# plt.clf()
+# plt.plot( featuresnp[:,12] , featuresnp[:,16], '.' )

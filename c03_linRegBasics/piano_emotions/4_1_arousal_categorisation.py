@@ -40,7 +40,7 @@ plt.boxplot( featuresnp )
 
 from sklearn.preprocessing import StandardScaler
 
-scaler = StandardScaler(with_mean=True, with_std=True)
+scaler = StandardScaler(with_mean=False, with_std=True)
 scaled_features = scaler.fit_transform( featuresnp )
 
 plt.clf()
@@ -94,6 +94,18 @@ preds_binary = svm_class.predict( test_input )
 comparison_check = np.c_[ preds_binary , test_output ]
 accuracy_svm = np.sum( test_output == preds_binary ) / preds.size
 
+# %% logistic regression
+
+from sklearn.linear_model import LogisticRegression
+
+log_reg = LogisticRegression()
+log_reg.fit( train_input , train_output )
+# make predictions from training data
+preds = log_reg.predict( test_input )
+preds_binary = np.array( preds >= 0.5 ).astype(int)
+comparison_check = np.c_[ preds , preds_binary , test_output ]
+accuracy_linear = np.sum( test_output == preds_binary ) / preds.size
+
 # %% cross validation - custom accuracy metric
 
 from sklearn.metrics import make_scorer
@@ -121,6 +133,9 @@ scores_forest = cross_val_score( forest_class, featuresnp, energeticflagsnp.rave
 scores_svm = cross_val_score( svm_class, featuresnp, energeticflagsnp.ravel(),
                          scoring=my_scorer, cv=strat10split )
 
+scores_log = cross_val_score( log_reg, featuresnp, energeticflagsnp.ravel(),
+                         scoring=my_scorer, cv=strat10split )
+
 def present_scores( s , algorithm='method' ):
     print(30*'-')
     print( algorithm + ' accuracy in 10-fold stratified split validation:' )
@@ -131,4 +146,5 @@ def present_scores( s , algorithm='method' ):
 present_scores( scores_lin , algorithm='linear regression' )
 present_scores( scores_forest , algorithm='random forest' )
 present_scores( scores_svm , algorithm='SVM' )
+present_scores( scores_log , algorithm='logistic regression' )
 
