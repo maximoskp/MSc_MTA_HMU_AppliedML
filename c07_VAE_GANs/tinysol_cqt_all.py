@@ -30,7 +30,7 @@ for k in tiny_SOL_all.keys():
     x_cqt = []
     for i,s in enumerate(tiny_SOL_all[k]):
         print('\r' + str(i), end='')
-        tmp_cqt = librosa.cqt( y=s , sr=8000, bins_per_octave=12*3, hop_length=256, n_bins=12*3*5 )
+        tmp_cqt = librosa.cqt( y=s , sr=8000, bins_per_octave=12*3, hop_length=256, n_bins=3*64 )
         x_cqt.append( np.abs( tmp_cqt ) )
     print(' ')
     tiny_SOL_cqt_all[k] = x_cqt
